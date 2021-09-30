@@ -1,34 +1,6 @@
 #include "Bomber.h"
 
-void Bomber::Morir()
+Bomber::Bomber(Texture* _textura):GameActor(_textura)
 {
-}
-
-void Bomber::Correr() {
-
-}
-
-void Bomber::Mover()
-{
-
-}
-
-void Bomber::ColocarBomba()
-{
-
-}
-
-void Bomber::ActivarBomba()
-{
-
-}
-
-void Bomber::Vida()
-{
-
-}
-
-void Bomber::Puntaje()
-{
-
+	
 }
