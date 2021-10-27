@@ -1,5 +1,6 @@
 #pragma once
 #include<iostream>
+#include <SDL.h>
 using namespace std;
 
 class GameObject
@@ -8,8 +9,8 @@ private:
 	int  idGameObject;
 	string nombre;
 	bool eliminar;
-
 public:
+	static int numeroGameObjectCreados;
 	GameObject();
 	GameObject(string _nombre);
 
@@ -25,10 +26,9 @@ public:
 	//Metodos virtuales puros
 	virtual void render() = 0;
 	virtual void update() = 0;
-	//virtual void handleEvent(SDL_Event* event) = 0;
+	virtual void handleEvent(SDL_Event* _event) = 0;
 	//Metodos virtuales
 	virtual void deleteGameObject() { eliminar = true; }
 	virtual void free() {};
 
 };
-

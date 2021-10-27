@@ -1,5 +1,7 @@
 #include "Texture.h"
 
+SDL_Renderer* Texture::renderer = nullptr;
+
 Texture::Texture() {
 	texturaSDL = nullptr;
 	renderer = nullptr;
@@ -14,7 +16,7 @@ Texture::Texture(SDL_Renderer* _renderer) {
 	alto = 0;
 }
 
-Texture::~Texture(){
+Texture::~Texture() {
 	free();
 }
 
@@ -49,7 +51,7 @@ bool Texture::loadFromImage(std::string path, Uint8 r, Uint8 g, Uint8 b)
 		std::cout << "Error al crear la textura" << std::endl;
 		return false;
 	}
-		
+
 	ancho = imageSurface->w;
 	alto = imageSurface->h;
 
@@ -59,12 +61,12 @@ bool Texture::loadFromImage(std::string path, Uint8 r, Uint8 g, Uint8 b)
 }
 
 void Texture::render(int x, int y, SDL_Rect* clip, SDL_Rect* rect, double angle, SDL_Point* center, SDL_RendererFlip renderFlip) {
-	if(renderer == nullptr) {
+	if (renderer == nullptr) {
 		return;
 	}
 
 	if (rect == nullptr) {
-		SDL_Rect rect2 = { x, y, ancho, alto };
+		SDL_Rect rect2 = { x, y, getAncho(), getAlto() };
 		if (clip != nullptr) {
 			rect2.w = clip->w;
 			rect2.h = clip->h;

@@ -1,10 +1,11 @@
-#include "Enemigo.h"
-Enemigo::Enemigo(Texture* _textura, Tile* _tileActual) :GameActor(_textura, _tileActual)
+#include "MuroMetal.h"
+
+MuroMetal::MuroMetal(Texture* _textura, Tile* _tileActual) :GameActor(_textura, _tileActual)
 {
 	tileActual = _tileActual;
 
 	if (tileActual != nullptr) {
-		tileActual->setEnemigo(this);
+		tileActual->setMuroMetal(this);
 
 		posicionX = tileActual->getPosicionTileX() * Tile::anchoTile;
 		posicionY = tileActual->getPosicionTileY() * Tile::altoTile;
@@ -18,16 +19,16 @@ Enemigo::Enemigo(Texture* _textura, Tile* _tileActual) :GameActor(_textura, _til
 	}
 }
 
-void Enemigo::setTileActual(Tile* _tileNuevo)
+void MuroMetal::setTileActual(Tile* _tileNuevo)
 {
 	if (tileActual != nullptr) {
-		tileActual->setEnemigo(nullptr);
+		tileActual->setMuroMetal(nullptr);
 	}
 
 	tileActual = _tileNuevo;
 
 	if (tileActual != nullptr) {
-		tileActual->setEnemigo(this);
+		tileActual->setMuroMetal(this);
 
 		posicionX = tileActual->getPosicionTileX() * Tile::anchoTile;
 		posicionY = tileActual->getPosicionTileY() * Tile::altoTile;
@@ -37,5 +38,4 @@ void Enemigo::setTileActual(Tile* _tileNuevo)
 		posicionY = 0;
 	}
 }
-
 

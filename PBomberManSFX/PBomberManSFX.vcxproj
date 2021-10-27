@@ -19,20 +19,32 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Bomber.cpp" />
+    <ClCompile Include="Animation.cpp" />
+    <ClCompile Include="Bomberman.cpp" />
+    <ClCompile Include="BombermanRobot.cpp" />
     <ClCompile Include="Detonador.cpp" />
     <ClCompile Include="Enemigo.cpp" />
     <ClCompile Include="Explosion.cpp" />
     <ClCompile Include="GameActor.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="GamePawn.cpp" />
+    <ClCompile Include="MapGenerator.cpp" />
     <ClCompile Include="Muro.cpp" />
-    <ClCompile Include="MuroMetalico.cpp" />
+    <ClCompile Include="MuroCeramica.cpp" />
+    <ClCompile Include="MuroMetal.cpp" />
     <ClCompile Include="principal.cpp" />
+    <ClCompile Include="Sprite.cpp" />
+    <ClCompile Include="SueloCesped.cpp" />
+    <ClCompile Include="system\KeyboardInput.cpp" />
     <ClCompile Include="Texture.cpp" />
+    <ClCompile Include="Tile.cpp" />
+    <ClCompile Include="TilesGraph.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Bomber.h" />
+    <ClInclude Include="Animation.h" />
+    <ClInclude Include="Bomberman.h" />
+    <ClInclude Include="BombermanRobot.h" />
     <ClInclude Include="Detonador.h" />
     <ClInclude Include="Enemigo.h" />
     <ClInclude Include="Explosion.h" />
@@ -40,9 +52,18 @@
     <ClInclude Include="GameDirecctions.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="GamePawn.h" />
+    <ClInclude Include="MapGenerator.h" />
     <ClInclude Include="Muro.h" />
-    <ClInclude Include="MuroMetalico.h" />
+    <ClInclude Include="MuroCeramica.h" />
+    <ClInclude Include="MuroMetal.h" />
+    <ClInclude Include="Pila.h" />
+    <ClInclude Include="Sprite.h" />
+    <ClInclude Include="SueloCesped.h" />
+    <ClInclude Include="system\KeyboardInput.h" />
     <ClInclude Include="Texture.h" />
+    <ClInclude Include="Tile.h" />
+    <ClInclude Include="TilesGraph.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="hello_world.bmp" />

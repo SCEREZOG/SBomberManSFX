@@ -4,9 +4,10 @@
 GameManager::GameManager() {
 	gWindow = nullptr;
 	gRenderer = nullptr;
-	texturaBomber1 = nullptr;
-	texturaBomber2 = nullptr;
-	texturaMuroMetalico = nullptr;
+	generadorMapa = nullptr;
+	keyboardInput = KeyboardInput::Instance();
+	enEjecucion = true;
+	tilesGraphGM = nullptr;
 }
 
 bool GameManager::onInit() {
@@ -14,7 +15,7 @@ bool GameManager::onInit() {
 	//Initialization flag
 	bool success = true;
 
-	if (SDL_Init(SDL_INIT_VIDEO) < 0) 
+	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
 		cout << "SDL could not initialize! SDL_Error: " << SDL_GetError() << endl;
 		success = false;
@@ -22,7 +23,7 @@ bool GameManager::onInit() {
 	else
 	{
 		//Create window
-		gWindow = SDL_CreateWindow("Bomber Man USFX", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+		gWindow = SDL_CreateWindow("Bomberman Man USFX", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
 		if (gWindow == nullptr)
 		{
 			cout << "Window could not be created! SDL_Error: " << SDL_GetError() << endl;
@@ -55,24 +56,61 @@ bool GameManager::onInit() {
 	}
 
 	return success;
-};
-
-bool GameManager::loadMedia()
-{
-	//Loading success flag
-	bool success = true;
-
-	//Load PNG texture
-	gTexture = loadTexture("texture.png");
-	if (gTexture == NULL)
-	{
-		printf("Failed to load texture image!\n");
-		success = false;
-	}
-
-	return success;
 }
 
+bool GameManager::loadContent()
+{
+	tilesGraphGM = new TilesGraph(25, 15, 850, 510);
+	GameActor::tilesGraph = tilesGraphGM;
+
+	generadorMapa = new MapGenerator(gRenderer, SCREEN_WIDTH, SCREEN_HEIGHT, tilesGraphGM);
+	generadorMapa->crearObjetosJuego("resources/level1.txt");
+	generadorMapa->transferirObjetosJuego(actoresJuego);
+
+	if (actoresJuego.size() > 0)
+		return true;
+
+	return false;
+}
+
+void GameManager::onEvent(SDL_Event* _event)
+{
+	if (_event->type == SDL_QUIT) {
+		enEjecucion = false;
+	}
+
+	switch (_event->type) {
+	case SDL_KEYDOWN:
+		keyboardInput->TurnKeyOn(_event->key.keysym.sym);
+		break;
+	case SDL_KEYUP:
+		keyboardInput->TurnKeyOff(_event->key.keysym.sym);
+		break;
+		//	switch (_event->key.keysym.sym) {
+		//	case SDLK_f:
+		//		//SDL_SetWindowFullscreen(gWindow, SDL_WINDOW_FULLSCREEN);
+		//		break;
+		//	case SDLK_n:
+		//		//SDL_SetWindowFullscreen(gWindow, SDL_WINDOW_MAXIMIZED);
+		//		break;
+		//	}
+	}
+}
+
+void GameManager::onLoop() {
+	for (int i = 0; i < actoresJuego.size(); i++) {
+		actoresJuego[i]->update();
+	}
+}
+
+void GameManager::onRender() {
+	SDL_RenderClear(gRenderer);
+	for (int i = 0; i < actoresJuego.size(); i++) {
+		actoresJuego[i]->render();
+	}
+
+	SDL_RenderPresent(gRenderer);
+}
 
 void GameManager::close()
 {
@@ -97,146 +135,31 @@ int GameManager::onExecute() {
 		cout << "Failed to initialize!" << endl;
 		return -1;
 	}
-	else
+
+	if (loadContent() == false) {
+		cout << "Failed to load content!" << endl;
+		return -1;
+	}
+
+	//While application is running
+	while (enEjecucion)
 	{
-		//Main loop flag
-		bool quit = false;
-
-		//Event handler
-		SDL_Event event;
-
-		texturaBomber1 = new Texture(gRenderer);
-		texturaBomber1->loadFromImage("resources/bomber.bmp");
-		texturaBomber2 = new Texture(gRenderer);
-		texturaBomber2->loadFromImage("resources/textures.bmp");
-		texturaMuroMetalico = new Texture(gRenderer);
-		texturaMuroMetalico->loadFromImage("resources/muro_metalico2.jpg");
-
-		Bomber* b1 = new Bomber(texturaBomber1);
-		Bomber* b2 = new Bomber(texturaBomber2);
-		MuroMetalico* mm1 = new MuroMetalico(texturaMuroMetalico);
-		MuroMetalico* mm2 = new MuroMetalico(texturaMuroMetalico);
-		MuroMetalico* mm3 = new MuroMetalico(texturaMuroMetalico);
-		MuroMetalico* mm4 = new MuroMetalico(texturaMuroMetalico);
-
-		mm1->setImagenX(0);
-		mm1->setImagenY(0);
-		mm1->setAncho(770);
-		mm1->setAlto(30);
-		mm1->setPosicionX(0);
-		mm1->setPosicionY(0);
-
-		mm2->setImagenX(0);
-		mm2->setImagenY(0);
-		mm2->setAncho(30);
-		mm2->setAlto(600);
-		mm2->setPosicionX(770);
-		mm2->setPosicionY(0);
-
-		mm3->setImagenX(0);
-		mm3->setImagenY(0);
-		mm3->setAncho(770);
-		mm3->setAlto(30);
-		mm3->setPosicionX(0);
-		mm3->setPosicionY(570);
-
-
-		mm4->setImagenX(0);
-		mm4->setImagenY(0);
-		mm4->setAncho(30);
-		mm4->setAlto(570);
-		mm4->setPosicionX(0);
-		mm4->setPosicionY(30);
-
-		//b1->setImagenX(50);
-		//b1->setImagenY(50);
-		//b1->setAncho(20);
-		//b1->setAlto(30);
-
-		b2->setImagenX(570);
-		b2->setImagenY(3);
-		b2->setAncho(20);
-		b2->setAlto(33);
-		b2->setPosicionX(50);
-		b2->setPosicionY(50);
-				
-		actoresJuego.push_back(b1);
-		actoresJuego.push_back(b2);
-		actoresJuego.push_back(mm1);
-		actoresJuego.push_back(mm2);
-		actoresJuego.push_back(mm3);
-		actoresJuego.push_back(mm4);
-
-		//While application is running
-		while (!quit)
+		//Handle events on queue
+		while (SDL_PollEvent(&evento) != 0)
 		{
-			//Handle events on queue
-			while (SDL_PollEvent(&event) != 0)
-			{
-				//User requests quit
-				if (event.type == SDL_QUIT)
-				{
-					quit = true;
-				}
-			}
-
-			//Clear screen
-			//SDL_RenderClear(gRenderer);
-
-			//Render texture to screen
-			//SDL_RenderCopy(gRenderer, gTexture, NULL, NULL);
-			
-				
-			////Clear screen
-			SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
-			SDL_RenderClear(gRenderer);
-
-			//Update screen
-
-			/*onLoop();
-			onRender();*/
-			
-			for (int i = 0; i < actoresJuego.size(); i++) {
-				/*((GameActor*)actoresJuego[i])->setPosicionX(rand() % SCREEN_WIDTH);
-				((GameActor*)actoresJuego[i])->setPosicionY(rand() % SCREEN_HEIGHT);*/
-
-				actoresJuego[i]->render();
-			}
-
-			SDL_RenderPresent(gRenderer);
+			onEvent(&evento);
 		}
+
+		onLoop();
+		onRender();
 	}
 
 	//Free resources and close SDL
 	close();
 
+	std::cout << "Numero de objetos en el vector: " << actoresJuego.size() << std::endl;
+	std::cout << "Numero de objetos creados:" << GameObject::numeroGameObjectCreados << std::endl;
+
 	return 0;
 
-}
-
-SDL_Texture* GameManager::loadTexture(std::string path)
-{
-	//The final texture
-	SDL_Texture* newTexture = NULL;
-
-	//Load image at specified path
-	SDL_Surface* loadedSurface = IMG_Load(path.c_str());
-	if (loadedSurface == NULL)
-	{
-		printf("Unable to load image %s! SDL_image Error: %s\n", path.c_str(), IMG_GetError());
-	}
-	else
-	{
-		//Create texture from surface pixels
-		newTexture = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
-		if (newTexture == NULL)
-		{
-			printf("Unable to create texture from %s! SDL Error: %s\n", path.c_str(), SDL_GetError());
-		}
-
-		//Get rid of old loaded surface
-		SDL_FreeSurface(loadedSurface);
-	}
-
-	return newTexture;
 }

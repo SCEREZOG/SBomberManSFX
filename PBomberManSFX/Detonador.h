@@ -31,4 +31,3 @@ public:
 	void ReducirTiempo();
 	void MostrarTiempoRestante();
 };
-
