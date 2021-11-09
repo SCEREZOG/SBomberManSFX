@@ -49,7 +49,7 @@ Tile* TilesGraph::getTileEn(int _x, int _y)
 
     if (indice < 0)
         return nullptr;
-
+    
     return vTilesGraph[indice];
 }
 
@@ -103,33 +103,3 @@ Bomberman* TilesGraph::getBomberman()
 
     return nullptr;
 }
-
-//BombermanRobot* TilesGraph::getBombermanRobot()
-//{
-//
-//
-//    for (auto itg = vTilesGraph.begin(); itg != vTilesGraph.end(); ++itg) {
-//        if ((*itg)->getBombermanRobot() != nullptr) {
-//            return (*itg)->getBombermanRobot();
-//        }
-//    }
-//
-//    return nullptr;
-//}
-
-//Enemigo* TilesGraph::getEnemigo()
-//{
-//    /*for (int i = 0 : i < tilesGraph.size(); i++) {
-//        if( tilesGraph[i]->getBomberman() != null){
-//            return tilesGraph[i]->getBomberman();
-//        }
-//    }*/
-//
-//    for (auto itg = vTilesGraph.begin(); itg != vTilesGraph.end(); ++itg) {
-//        if ((*itg)->getEnemigo() != nullptr) {
-//            return (*itg)->getEnemigo();
-//        }
-//    }
-//
-//    return nullptr;
-//}

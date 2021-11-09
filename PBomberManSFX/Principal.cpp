@@ -1,6 +1,6 @@
 #include <iostream>
 #include "GameManager.h"
-//#include "Bomber.h"
+//#include "Bomberman.h"
 //#include "GameObject.h"
 //#include "GameActor.h"
 //#include "Detonador.h"

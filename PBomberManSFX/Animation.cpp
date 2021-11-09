@@ -1,32 +1,34 @@
 #include "Animation.h"
+
 #include "Sprite.h"
 
-void Animation::addAnimationEntity(AnimationEntity entity)
+void Animation::addAnimationEntity(AnimationEntity _entity)
 {
-    animation.push_back(std::move(entity));
+    animation.push_back(std::move(_entity));
     //animation.push_back(entity);
 }
 
 void Animation::setSprite(Sprite* _sprite)
 {
     this->sprite = _sprite;
+    //sprite = _sprite;
 
-    if (!animation.empty())
+    if(!animation.empty())
     {
         AnimationEntity entity = animation[0];
         this->sprite->setClip(static_cast<int>(entity.width), static_cast<int>(entity.height),
-            static_cast<int>(entity.positionX), static_cast<int>(entity.positionY));
+                                static_cast<int>(entity.positionX), static_cast<int>(entity.positionY));
     }
 }
 
-void Animation::setAnimationInterval(const unsigned int timeInMs)
+void Animation::setAnimationInterval(const unsigned int _timeInMs)
 {
-    interval = timeInMs;
+    interval = _timeInMs;
 }
 
 void Animation::play()
 {
-    if (isPlaying)
+    if(isPlaying)
         return;
 
     isPlaying = true;
@@ -45,19 +47,18 @@ void Animation::reset()
     time = 0;
 }
 
-void Animation::update(const unsigned int delta)
+void Animation::update(const unsigned int _delta)
 {
-    if (animation.size() < 1 || !sprite || !isPlaying)
+    if(animation.size() < 1 || !sprite || !isPlaying)
         return;
 
-    time += delta;
-    if (time >= interval)
+    time += _delta;
+    if(time >= interval)
     {
         time = 0;
         AnimationEntity entity = animation[currentEntity];
         currentEntity = (currentEntity + 1) % animation.size();
         sprite->setClip(static_cast<int>(entity.width), static_cast<int>(entity.height),
-            static_cast<int>(entity.positionX), static_cast<int>(entity.positionY));
+                        static_cast<int>(entity.positionX), static_cast<int>(entity.positionY));
     }
 }
-

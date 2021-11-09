@@ -8,8 +8,6 @@
 //#include "SueloCesped.h"
 
 class Bomberman;
-class BombermanRobot;
-class Enemigo;
 class MuroCeramica;
 class MuroMetal;
 class SueloCesped;
@@ -18,8 +16,6 @@ class Tile
 {
 private:
 	Bomberman* bomberman;
-	BombermanRobot* bombermanRobot;
-	Enemigo* enemigo;
 	MuroCeramica* muroCeramica;
 	MuroMetal* muroMetal;
 	SueloCesped* sueloCesped;
@@ -35,12 +31,8 @@ public:
 	Tile();
 	Tile(int _posicionTileX, int _posicionTileY);
 
-	// METODOS ACCESORES
+	// Metodos accesores
 	Bomberman* getBomberman() { return bomberman; }
-	//
-	BombermanRobot* getBombermanRobot() { return bombermanRobot; }
-	Enemigo* getEnemigo() { return enemigo; }
-
 	MuroCeramica* getMuroCeramica() { return muroCeramica; }
 	MuroMetal* getMuroMetal() { return muroMetal; }
 	SueloCesped* getSueloCesped() { return sueloCesped; }
@@ -48,10 +40,6 @@ public:
 	int getPosicionTileY() { return posicionTileY; }
 
 	void setBomberman(Bomberman* _bomberman) { bomberman = _bomberman; }
-
-	void setBombermanRobot(BombermanRobot* _bombermanRobot) { bombermanRobot = _bombermanRobot; }
-	void setEnemigo(Enemigo* _enemigo) { enemigo = _enemigo; }
-
 	void setMuroCeramica(MuroCeramica* _muroCeramica) { muroCeramica = _muroCeramica; }
 	void setMuroMetal(MuroMetal* _muroMetal) { muroMetal = _muroMetal; }
 	void setSueloCesped(SueloCesped* _sueloCesped) { sueloCesped = _sueloCesped; }

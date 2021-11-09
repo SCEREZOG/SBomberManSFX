@@ -3,27 +3,27 @@
 #include <SDL.h>
 #include <memory>
 #include <vector>
-
 #include "Animation.h"
 
 /**
     * @brief Sprite object - for drawable objects
     *
-    */
-class Sprite
-{
-protected:
-    std::vector<std::shared_ptr<Animation>> animations; // array of animations
+*/
 
+class Sprite 
+{
 protected:
     SDL_Renderer* renderer = nullptr;               // SDL2 renderer
     std::shared_ptr<SDL_Texture> texture = nullptr; // SDL2 texture
+    //SDL_Texture* texture = nullptr;               // SDL2 texture
     SDL_Rect rect;                                  // size and position of texture on the screen
     SDL_Rect clip;                                  // what part of texture to draw on the screen
     SDL_RendererFlip flipping = SDL_FLIP_NONE;      // flip of texture
 
 private:
-    bool isAttachedToCamera = true; // follow to camera
+    bool isAttachedToCamera = false; // follow to camera
+    std::vector<std::shared_ptr<Animation>> animations; // array of animations
+    //std::vector<std::shared_ptr<GameObject>> objects; // objetos para actualizar y dibujar
 
 public:
     /**
@@ -39,21 +39,15 @@ public:
         *
         * @param animation - animation
         */
-    void addAnimation(std::shared_ptr<Animation> animation);
-    //void addAnimation(Animation* animation);
-    /**
-        * @brief Node update
-        *
-        * @param delta - time in ms
-        */
-    void setSize(const int width, const int height);
+   
+    void setSize(const int _width, const int _height);
     /**
      * @brief Set the Position of object
      *
      * @param x - position x
-     * @param y - position y
+     * @param y - position yh 
      */
-    void setPosition(const int x, const int y);
+    void setPosition(const int _x, const int _y);
     /**
      * @brief Set the Clip of source texture
      *
@@ -62,13 +56,13 @@ public:
      * @param x - position x
      * @param y - position y
      */
-    void setClip(const int width, const int height, const int x, const int y);
+    void setClip(const int _width, const int _height, const int _x, const int _y);
     /**
      * @brief Attach object to camera movement
      *
      * @param isAttached - attach if true
      */
-    void attachToCamera(bool isAttached = true);
+    void attachToCamera(bool _isAttached = true);
     /**
      * @brief Get the Width of object
      *
@@ -105,17 +99,29 @@ public:
      * @param flip - flip of texture
      */
     void setFlip(SDL_RendererFlip flip);
+ 
+    
+    void addAnimation(std::shared_ptr<Animation> animation);
+    //void addAnimation(Animation* animation);
+    /**
+        * @brief Node update
+        *
+        * @param delta - time in ms
+        */
+    
     /**
      * @brief Update object
      *
      * @param delta - time in milliseconds
      */
-    virtual void update(const unsigned int delta);
+    virtual void update(const unsigned int _delta);
     /**
      * @brief Draw object on the screen
      *
      * @param SDL_Rect - camera position
      */
-    void render(const SDL_Rect& camera) const;
+    void render(const SDL_Rect& _camera) const;
+
+         
 };
 

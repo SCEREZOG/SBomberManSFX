@@ -10,7 +10,7 @@ private:
 	int Cima;
 	const int numeroElementos;
 public:
-	Pila(int _numeroElementos) : numeroElementos(_numeroElementos) {
+	Pila(int _numeroElementos): numeroElementos(_numeroElementos) {
 		Datos = new T[numeroElementos];
 		Cima = -1;
 	}
@@ -26,7 +26,7 @@ void Pila<T>::Insertar(T elementoInsertar) {
 	if (!Llena()) {
 		Cima++;
 		Datos[Cima] = elementoInsertar;
-
+		
 		cout << "Se insertado satisfactoriamente" << endl;
 	}
 	else {
@@ -63,6 +63,5 @@ bool Pila<T>::Llena() {
 	else {
 		return true;
 	}
-
+		
 }
-

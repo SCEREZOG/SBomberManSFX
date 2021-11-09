@@ -3,7 +3,9 @@
 
 Sprite::Sprite(std::shared_ptr<SDL_Texture> _texture, SDL_Renderer* _renderer)
 {
+    //texture = _texture;
     this->texture = _texture;
+    this->renderer = _renderer;
 
     // get width and height of texture;
     int width, height;
@@ -19,42 +21,30 @@ Sprite::Sprite(std::shared_ptr<SDL_Texture> _texture, SDL_Renderer* _renderer)
     rect.h = height;
 }
 
-void Sprite::addAnimation(std::shared_ptr<Animation> animation)
+
+void Sprite::setSize(const int _width, const int _height)
 {
-    animations.push_back(animation);
+    rect.w = _width;  // controls the width of the rect
+    rect.h = _height; // controls the height of the rect
 }
 
-void Sprite::update(const unsigned int delta)
+void Sprite::setPosition(const int _x, const int _y)
 {
-    for (auto& animation : animations)
-    {
-        animation->update(delta);
-    }
+    rect.x = _x; // controls the rect's x coordinate
+    rect.y = _y; // controls the rect's y coordinate
 }
 
-void Sprite::setSize(const int width, const int height)
+void Sprite::setClip(const int _width, const int _height, const int _x, const int _y)
 {
-    rect.w = width;  // controls the width of the rect
-    rect.h = height; // controls the height of the rect
+    clip.w = _width;  // controls the width of the rect
+    clip.h = _height; // controls the height of the rect
+    clip.x = _x;      // controls the rect's x coordinate
+    clip.y = _y;      // controls the rect's y coordinate
 }
 
-void Sprite::setPosition(const int x, const int y)
+void Sprite::attachToCamera(bool _isAttached /* = true*/)
 {
-    rect.x = x; // controls the rect's x coordinate
-    rect.y = y; // controls the rect's y coordinate
-}
-
-void Sprite::setClip(const int width, const int height, const int x, const int y)
-{
-    clip.w = width;  // controls the width of the rect
-    clip.h = height; // controls the height of the rect
-    clip.x = x;      // controls the rect's x coordinate
-    clip.y = y;      // controls the rect's y coordinate
-}
-
-void Sprite::attachToCamera(bool isAttached /* = true*/)
-{
-    this->isAttachedToCamera = isAttached;
+    this->isAttachedToCamera = _isAttached;
 }
 
 int Sprite::getWidth() const
@@ -82,12 +72,26 @@ const SDL_Rect& Sprite::getRect() const
     return rect;
 }
 
-void Sprite::setFlip(SDL_RendererFlip flip)
+void Sprite::setFlip(SDL_RendererFlip _flip)
 {
-    flipping = flip;
+    flipping = _flip;
 }
 
-void Sprite::render(const SDL_Rect& camera) const
+void Sprite::addAnimation(std::shared_ptr<Animation> _animation)
+{
+    animations.push_back(_animation);
+}
+
+void Sprite::update(const unsigned int _delta)
+{
+    for (auto& animation : animations)
+    {
+        animation->update(_delta);
+    }
+}
+
+
+void Sprite::render(const SDL_Rect& _camera) const
 {
     if (renderer != nullptr && texture != nullptr)
     {
@@ -95,8 +99,8 @@ void Sprite::render(const SDL_Rect& camera) const
         SDL_Rect destrinationRect = rect;
         if (isAttachedToCamera)
         {
-            destrinationRect.x -= camera.x;
-            destrinationRect.y -= camera.y;
+            destrinationRect.x -= _camera.x;
+            destrinationRect.y -= _camera.y;
         }
         // draw on the screen
         SDL_RenderCopyEx(renderer, texture.get(), &clip, &destrinationRect, 0, nullptr, flipping);

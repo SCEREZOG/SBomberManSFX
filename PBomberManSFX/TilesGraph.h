@@ -29,7 +29,5 @@ public:
 	array<Tile*, 8> get8Vecinos(Tile* _tile);
 
 	Bomberman* getBomberman();
-	//BombermanRobot* getBombermanRobot();
-	/*Enemigo* getEnemigo();*/
 };
 
